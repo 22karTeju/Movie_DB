@@ -1,0 +1,330 @@
+MariaDB [(none)]> Create database Movie_DB;
+
+
+MariaDB [(none)]> Use Movie_DB;
+
+MariaDB [Movie_DB]> create table movie(mov_id int primary key,mov_title varchar(50) not null,mov_year int not null,mov_time int not null,mov_lang varchar(50),mov_dt_rel date,mov_rel_country varchar(50));
+Query OK, 0 rows affected (0.013 sec)
+
+MariaDB [Movie_DB]> DESC Movie;
++-----------------+-------------+------+-----+---------+-------+
+| Field           | Type        | Null | Key | Default | Extra |
++-----------------+-------------+------+-----+---------+-------+
+| mov_id          | int(11)     | NO   | PRI | NULL    |       |
+| mov_title       | varchar(50) | NO   |     | NULL    |       |
+| mov_year        | int(11)     | NO   |     | NULL    |       |
+| mov_time        | int(11)     | NO   |     | NULL    |       |
+| mov_lang        | varchar(50) | YES  |     | NULL    |       |
+| mov_dt_rel      | date        | YES  |     | NULL    |       |
+| mov_rel_country | varchar(50) | YES  |     | NULL    |       |
++-----------------+-------------+------+-----+---------+-------+
+7 rows in set (0.015 sec)
+
+MariaDB [Movie_DB]> create table actor(act_id Varchar(10) primary key,act_fname varchar(20) not null,act_lname varchar(20),act_gender enum("F","M"));
+Query OK, 0 rows affected (0.012 sec)
+
+MariaDB [Movie_DB]> DESC Actor;
++------------+---------------+------+-----+---------+-------+
+| Field      | Type          | Null | Key | Default | Extra |
++------------+---------------+------+-----+---------+-------+
+| act_id     | varchar(10)   | NO   | PRI | NULL    |       |
+| act_fname  | varchar(20)   | NO   |     | NULL    |       |
+| act_lname  | varchar(20)   | YES  |     | NULL    |       |
+| act_gender | enum('F','M') | YES  |     | NULL    |       |
++------------+---------------+------+-----+---------+-------+
+4 rows in set (0.015 sec)
+
+
+
+MariaDB [Movie_DB]> Create table Reviewer (Rev_id Varchar(10) primary key ,Rev_Name Char (30));
+Query OK, 0 rows affected (0.014 sec)
+
+MariaDB [Movie_DB]> DESC Reviewer;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| Rev_id   | varchar(10) | NO   | PRI | NULL    |       |
+| Rev_Name | char(30)    | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+2 rows in set (0.015 sec)
+
+
+
+MariaDB [Movie_DB]> Create table Director(Dir_Id Varchar (10) primary key ,Dir_FName Char (20), Dir_LName Char (20));
+Query OK, 0 rows affected (0.015 sec)
+
+MariaDB [Movie_DB]> DESC Director;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| Dir_Id    | varchar(10) | NO   | PRI | NULL    |       |
+| Dir_FName | char(20)    | YES  |     | NULL    |       |
+| Dir_LName | char(20)    | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+3 rows in set (0.014 sec)
+
+
+
+MariaDB [Movie_DB]> Create table Genres (Gen_Id Varchar(10) primary key , Gen_Title Char (20));
+Query OK, 0 rows affected (0.013 sec)
+
+MariaDB [Movie_DB]> DESC Genres;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| Gen_Id    | varchar(10) | NO   | PRI | NULL    |       |
+| Gen_Title | char(20)    | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+2 rows in set (0.014 sec)
+
+
+MariaDB [Movie_DB]> Create table Movie_cast (Act_Id Varchar (10), Mov_Id Int, Role Char(30), Foreign Key (Act_ID) References Actor(Act_ID),Foreign Key (Mov_ID) References Movie(Mov_ID));
+Query OK, 0 rows affected (0.035 sec)
+
+MariaDB [Movie_DB]> DESC Movie_Cast;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| Act_Id | varchar(10) | YES  | MUL | NULL    |       |
+| Mov_Id | int(11)     | YES  | MUL | NULL    |       |
+| Role   | char(30)    | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.015 sec)
+
+
+
+MariaDB [Movie_DB]> create table Movie_Genres(Mov_Id int, Gen_Id Varchar(10), Foreign Key (Mov_ID) References Movie(Mov_ID));
+Query OK, 0 rows affected (0.037 sec)
+
+MariaDB [Movie_DB]> DESC Movie_Genres;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| Mov_Id | int(11)     | YES  | MUL | NULL    |       |
+| Gen_Id | varchar(10) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+2 rows in set (0.014 sec)
+
+
+MariaDB [Movie_DB]> Create table Rating (Mov_ID Int, Rev_ID Varchar(10), Rev_Star Int, Num_O_Ratings Int, Foreign Key (Mov_ID) References Movie(Mov_ID),Foreign Key (Rev_ID) References Reviewer (Rev_ID));
+Query OK, 0 rows affected (0.033 sec)
+
+MariaDB [Movie_DB]> DESC Rating;
++---------------+-------------+------+-----+---------+-------+
+| Field         | Type        | Null | Key | Default | Extra |
++---------------+-------------+------+-----+---------+-------+
+| Mov_ID        | int(11)     | YES  | MUL | NULL    |       |
+| Rev_ID        | varchar(10) | YES  | MUL | NULL    |       |
+| Rev_Star      | int(11)     | YES  |     | NULL    |       |
+| Num_O_Ratings | int(11)     | YES  |     | NULL    |       |
++---------------+-------------+------+-----+---------+-------+
+4 rows in set (0.018 sec)
+
+
+
+MariaDB [Movie_DB]> Create table Movie_Direction (Dir_ID Varchar(10), Mov_ID Int, Foreign Key (Dir_ID) References Director (Dir_ID),Foreign Key (Mov_ID) References Movie (Mov_ID));
+Query OK, 0 rows affected (0.033 sec)
+
+MariaDB [Movie_DB]> DESC Movie_Direction;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| Dir_ID | varchar(10) | YES  | MUL | NULL    |       |
+| Mov_ID | int(11)     | YES  | MUL | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+2 rows in set (0.015 sec)
+
+
+MariaDB [Movie_DB]> Show Tables;
++--------------------+
+| Tables_in_movie_db |
++--------------------+
+| actor              |
+| director           |
+| genres             |
+| movie              |
+| movie_cast         |
+| movie_direction    |
+| movie_genres       |
+| rating             |
+| reviewer           |
++--------------------+
+9 rows in set (0.001 sec)
+
+
+
+
+
+Insert Record in all tables:
+
+
+MariaDB [Movie]> Insert into Movie VALUES (1,"pathaan",2023,3,"hindi","2023-01-25","india"),(2,"OMG2",2023,11,"hindi","2023-08-11","india"),(3,"Titanic",1997,3,"English","1997-12-19","USA"),(4,"Valavi",2022,5,"Marathi","2022-10-01","India"),(5,"Pushpa",2021,2,"Tamil","2021-07-30","India");
+
+MariaDB [Movie_DB]> Insert into Actor VALUES("A101","Deepika","Padukone","F"),("A102","Akshay","Kumar","M"),("A103","Kate","Winslet","F"),("A104","Swapnil","Joshi","M"),("A105","Allu","Arjun","M");
+
+MariaDB [Movie]>  Insert into Reviewer VALUES ("R14567","Neha"),("R56341","Ketan"),("R19876","Harsha"),("R13290","Pooja"),("R70801","Teju");
+
+MariaDB [Movie_DB]> Insert Into Director VALUES ("D11","Rajkumar","Hirani"),("D12","Mahesh","Bhatt"),("D13","Manish","Shah"),("D14","Sanjaylila","Bhansali"),("D15","Karan","Johar");
+
+MariaDB [Movie_DB]> Insert into Genres VALUES ("G132","Triller"),("G330","Comedy"),("G478","Romantic"),("G512","Horror"),("G765","Action");
+
+MariaDB [Movie_DB]> Insert into Movie_Cast VALUES("A101",1,"Lead"),("A102",2,"Comeo"),("A103",3,"Lead"),("A104",4,"Side Actor"),("A105",5,"Villan");
+
+MariaDB [Movie_DB]> Insert into Movie_Genres VALUES (1,"G132"),(2,"G330"),(3,"G478"),(4,"G512"),(5,"G765");
+
+MariaDB [Movie_DB]> Insert into Rating VALUES (1,"R13290",2,1),(2,"R14567",5,9),(3,"R19876",5,10),(4,"R56341",1,3),(5,"R70801",5,9);
+
+MariaDB [Movie_DB]> Insert into Movie_Direction VALUES ("D11",1),("D12",2),("D13",3),("D14",4),("D15",5);
+
+
+Movie Table :
+
+MariaDB [Movie_DB]> Select * from Movie;
++--------+-----------+----------+----------+----------+------------+-----------------+
+| mov_id | mov_title | mov_year | mov_time | mov_lang | mov_dt_rel | mov_rel_country |
++--------+-----------+----------+----------+----------+------------+-----------------+
+|      1 | pathaan   |     2023 |        3 | hindi    | 2023-01-25 | india           |
+|      2 | OMG2      |     2023 |       11 | hindi    | 2023-08-11 | india           |
+|      3 | Titanic   |     1997 |        3 | English  | 1997-12-19 | USA             |
+|      4 | Valavi    |     2022 |        5 | Marathi  | 2022-10-01 | India           |
+|      5 | Pushpa    |     2021 |        2 | Tamil    | 2021-07-30 | India           |
++--------+-----------+----------+----------+----------+------------+-----------------+
+
+
+Actor Table :
+
+MariaDB [Movie_DB]> Select * from Actor;
++--------+-----------+-----------+------------+
+| act_id | act_fname | act_lname | act_gender |
++--------+-----------+-----------+------------+
+| A101   | Deepika   | Padukone  | F          |
+| A102   | Akshay    | Kumar     | M          |
+| A103   | Kate      | Winslet   | F          |
+| A104   | Swapnil   | Joshi     | M          |
+| A105   | Allu      | Arjun     | M          |
++--------+-----------+-----------+------------+
+
+
+Reviewer Table :
+
+MariaDB [Movie_DB]> Select * from Reviewer;
++--------+----------+
+| Rev_id | Rev_Name |
++--------+----------+
+| R13290 | Pooja    |
+| R14567 | Neha     |
+| R19876 | Harsha   |
+| R56341 | Ketan    |
+| R70801 | Teju     |
++--------+----------+
+
+
+Director Table : 
+
+MariaDB [Movie_DB]> Select * from Director;
++--------+------------+-----------+
+| Dir_Id | Dir_FName  | Dir_LName |
++--------+------------+-----------+
+| D11    | Rajkumar   | Hirani    |
+| D12    | Mahesh     | Bhatt     |
+| D13    | Manish     | Shah      |
+| D14    | Sanjaylila | Bhansali  |
+| D15    | Karan      | Johar     |
++--------+------------+-----------+
+
+Genres Table : 
+
+
+MariaDB [Movie_DB]> Select * from Genres;
++--------+-----------+
+| Gen_Id | Gen_Title |
++--------+-----------+
+| G132   | Triller   |
+| G330   | Comedy    |
+| G478   | Romantic  |
+| G512   | Horror    |
+| G765   | Action    |
++--------+-----------+
+
+
+Movie_cast Table :
+
+MariaDB [Movie_DB]> Select * from Movie_Cast;
++--------+--------+------------+
+| Act_Id | Mov_Id | Role       |
++--------+--------+------------+
+| A101   |      1 | Lead       |
+| A102   |      2 | Comeo      |
+| A103   |      3 | Lead       |
+| A104   |      4 | Side Actor |
+| A105   |      5 | Villan     |
++--------+--------+------------+
+
+
+Movie_Genres Table:
+
+MariaDB [Movie_DB]> Select * from Movie_Genres;
++--------+--------+
+| Mov_Id | Gen_Id |
++--------+--------+
+|      1 | G132   |
+|      2 | G330   |
+|      3 | G478   |
+|      4 | G512   |
+|      5 | G765   |
++--------+--------+
+
+Rating Table :
+
+MariaDB [Movie_DB]> Select * from Rating;
++--------+--------+----------+---------------+
+| Mov_ID | Rev_ID | Rev_Star | Num_O_Ratings |
++--------+--------+----------+---------------+
+|      1 | R13290 |        2 |             1 |
+|      2 | R14567 |        5 |             9 |
+|      3 | R19876 |        5 |            10 |
+|      4 | R56341 |        1 |             3 |
+|      5 | R70801 |        5 |             9 |
++--------+--------+----------+---------------+
+
+
+Movie_Direction Table :
+
+MariaDB [Movie_DB]> Select * from Movie_Direction;
++--------+--------+
+| Dir_ID | Mov_ID |
++--------+--------+
+| D11    |      1 |
+| D12    |      2 |
+| D13    |      3 |
+| D14    |      4 |
+| D15    |      5 |
++--------+--------+
+
+
+
+MariaDB [Movie_DB]> 
+ Select M.Mov_ID, M.Mov_Title, M.Mov_Year, M.Mov_Time, M.Mov_Lang, M.Mov_dt_rel,M.Mov_Rel_country, MG.Gen_ID, MC.Role, MC.Act_id,A.Act_FName,A.Act_LName,A.Act_Gender,G.Gen_Title, Md.Dir_ID, D.Dir_FName, D.Dir_LName, R.Rev_id,R.Rev_Star,R.Num_O_Ratings, RV.Rev_Name
+     From Movie M
+     LEFT JOIN Movie_Genres MG ON M.Mov_ID = Mg.Mov_ID
+     LEFT JOIN Movie_Cast MC ON M.Mov_ID = Mc.Mov_ID
+     JOIN Actor A ON MC.Act_Id = A.Act_Id
+     JOIN Genres G ON MG.Gen_ID = G.Gen_ID
+     JOIN Movie_Direction MD ON M.Mov_ID = MD.Mov_ID
+     JOIN Director D ON MD.Dir_ID = D.Dir_ID
+     JOIN Rating R ON M.Mov_ID = R.Mov_ID
+     JOIN Reviewer RV ON R.Rev_ID = RV.Rev_ID;
+
+
++--------+-----------+----------+----------+----------+------------+-----------------+--------+------------+--------+-----------+-----------+------------+-----------+--------+------------+-----------+--------+----------+---------------+----------+
+| Mov_ID | Mov_Title | Mov_Year | Mov_Time | Mov_Lang | Mov_dt_rel | Mov_Rel_country | Gen_ID | Role       | Act_id | Act_FName | Act_LName | Act_Gender | Gen_Title | Dir_ID | Dir_FName  | Dir_LName | Rev_id | Rev_Star | Num_O_Ratings | Rev_Name |
++--------+-----------+----------+----------+----------+------------+-----------------+--------+------------+--------+-----------+-----------+------------+-----------+--------+------------+-----------+--------+----------+---------------+----------+
+|      1 | pathaan   |     2023 |        3 | hindi    | 2023-01-25 | india           | G132   | Lead       | A101   | Deepika   | Padukone  | F          | Triller   | D11    | Rajkumar   | Hirani    | R13290 |        2 |             1 | Pooja    |
+|      2 | OMG2      |     2023 |       11 | hindi    | 2023-08-11 | india           | G330   | Comeo      | A102   | Akshay    | Kumar     | M          | Comedy    | D12    | Mahesh     | Bhatt     | R14567 |        5 |             9 | Neha     |
+|      3 | Titanic   |     1997 |        3 | English  | 1997-12-19 | USA             | G478   | Lead       | A103   | Kate      | Winslet   | F          | Romantic  | D13    | Manish     | Shah      | R19876 |        5 |            10 | Harsha   |
+|      4 | Valavi    |     2022 |        5 | Marathi  | 2022-10-01 | India           | G512   | Side Actor | A104   | Swapnil   | Joshi     | M          | Horror    | D14    | Sanjaylila | Bhansali  | R56341 |        1 |             3 | Ketan    |
+|      5 | Pushpa    |     2021 |        2 | Tamil    | 2021-07-30 | India           | G765   | Villan     | A105   | Allu      | Arjun     | M          | Action    | D15    | Karan      | Johar     | R70801 |        5 |             9 | Teju     |
++--------+-----------+----------+----------+----------+------------+-----------------+--------+------------+--------+-----------+-----------+------------+-----------+--------+------------+-----------+--------+----------+---------------+----------+
+
+
+
